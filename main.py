@@ -7,6 +7,7 @@ from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.llms import HuggingFaceHub
 from langchain.schema.runnable import RunnablePassthrough
 from langchain.schema.output_parser import StrOutputParser
+from langchain_huggingface import HuggingFaceEndpoint
 
 import warnings
 
@@ -34,13 +35,14 @@ vector_store = Chroma(
 vector_store.add_documents(docs)
 
 
-os.environ["HUGGINGFACEHUB_API_TOKEN"] = "YOUR HUGGINGFACE API TOKEN"
+os.environ["HUGGINGFACEHUB_API_TOKEN"] = "YOUR_API_KEY_HERE"
 
 repo_id = "mistralai/Mixtral-8x7B-Instruct-v0.1"
 
-llm = HuggingFaceHub(
+llm = HuggingFaceEndpoint(
     repo_id=repo_id,
-    model_kwargs={"temperature": 0.8, "top_k": 50},
+     model_kwargs={"stop_token_ids": [18, 198, 102]},
+    temperature=0.6,
     huggingfacehub_api_token=os.getenv("HUGGINGFACE_API_KEY"),
 )
 
